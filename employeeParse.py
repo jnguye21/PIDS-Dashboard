@@ -4,8 +4,8 @@ import time, requests, os, schedule, copy, dateutil.relativedelta
 
 
 # functions in shared directory
-from dashboard import *
-from webhooks import *
+from dashboard import dashboardBT, getAPInfo
+from webhooks import sendMessage
 from timeRetrieval import getTimeDiff
 
 # compare seen Scanning MACs with connected Dashboard MACs
@@ -164,7 +164,7 @@ def setEmployeeCount():
     maxTime = max(seq)
 
     for employee in deviceHistory['deviceList']:
-        print(employee)
+        #print(employee)
 
         if employee['isMainUser'] is True:
             deviceCount += 1
@@ -199,7 +199,8 @@ def getEmployeeCount():
     else:
         grammarInsert = "s are"
         
-    employeeCountMsg += "{} other employee{} currently in the area.".format(str(deviceCount - 1), grammarInsert)
+    employeeCountMsg += "{} other employee{} currently around you.".format(str(deviceCount - 1), grammarInsert)
+    #sendMessage(employeeCountMsg)
 
     return employeeCountMsg
 
@@ -225,6 +226,7 @@ def getInfo():
     #print()
 
     if user['name'] is not None:        
+        print()
         selfMessage = ""
 
         # new or returning
@@ -236,12 +238,13 @@ def getInfo():
             selfMessage = "You are currently in the {}.".format(APName)
             
         print("{}".format(selfMessage))
+        sendMessage(selfMessage)
             
     employeeCountMsg = getEmployeeCount()
     print()
     print("{}".format(employeeCountMsg))
     print()
-    #sendMessage(employeeCountMsg)
+    sendMessage(employeeCountMsg)
 
     #deviceHistory2 = copy.deepcopy(deviceHistory)
 
@@ -259,32 +262,27 @@ def getInfo():
                     timeDiff = getTimeDiff(employee['firstSeen'], currentTime) + " ago"
                 # continuously in area
                 elif employee['isContinuous'] is True:
-                    #if employee['isMainUser'] is True:
-                    #    selfMessage = "{} are in the {}".format(employeeName, APName)
-                    #    print("{}".format(selfMessage))
-                    #    continue
-                    #else:
                     nearbyEmployee = "{} has been in the area for".format(employeeName)
                     timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
-                
+                #print("timeDiff: {}".format(timeDiff))
                 employeeMessage = nearbyEmployee + timeDiff + "."
-                #sendMessage(employeeMessage)
+                sendMessage(employeeMessage)
                 print("{}".format(employeeMessage))
             # employee out of range (employee['firstSeen'] is None)
             elif employee['isAway'] is True: #and employee['isMainUser'] is False:
                 # just left
                 #print("test1")
-                '''if employee['justLeft'] is True:
+                if employee['justLeft'] is True:
                     #print("test2")
-                    awayEmployee = "{} just left the {}".format(employeeName, APName)
+                    awayEmployee = "{} left the area".format(employeeName)
                     employee['justLeft'] = False
                 # previously gone
-                else:'''
-                awayEmployee = "{} is no longer in the area but was last nearby".format(employeeName)
+                else:
+                    awayEmployee = "{} is no longer in the area but was last nearby".format(employeeName)
                 
                 timeDiff = getTimeDiff(employee['lastSeen'], currentTime)
                 employeeMessage = awayEmployee + timeDiff + " ago."
-                # sendMessage(employeeMessage)
+                sendMessage(employeeMessage)
                 print("{}".format(employeeMessage))
 
     #return deviceHistory

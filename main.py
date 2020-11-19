@@ -1,14 +1,14 @@
 #from flask import Flask, json, request
 import schedule, sys, time
 
-from employeeParse import *
+from employeeParse import getInfo
 
 # global list/dictionary
 from globals import deviceHistory, NUMBER_EMPLOYEES
 
 def main():    
     try:
-        schedule.every().minute.at(":30").do(getInfo)
+        schedule.every(60).seconds.do(getInfo)
     
         while True:
             schedule.run_pending()

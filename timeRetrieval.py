@@ -5,11 +5,16 @@ import dateutil.relativedelta
 # variables ending with 'Time' are in YYYY-MM-DD HH:MM:SS
 # variables ending with 'Epoch' are in Unix time
 def getTimeDiff(employeeEpoch, currentTime):
+    #currentEpoch = time.time()
     employeeTime = datetime.fromtimestamp(employeeEpoch) 
-    diffEpoch = dateutil.relativedelta.relativedelta (currentTime, employeeTime)
+    diffEpoch = dateutil.relativedelta.relativedelta(currentTime, employeeTime)
 
     timeInfo = ""
-
+    #print("currentEpoch {}".format(currentEpoch))
+    #print("empEpoch: {}".format(employeeEpoch))
+    #print("currentTime: {}".format(currentTime))
+    #print("empTime: {}".format(employeeTime))
+    #print("diffEpoch: {}".format(diffEpoch))
     # same day only
     if diffEpoch.day is None:
         if diffEpoch.hours > 0:
