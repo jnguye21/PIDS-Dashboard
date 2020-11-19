@@ -4,8 +4,6 @@ Tailored for Bluetooth
 ## Global Variables
 After replacing appropriate **&lt;variables&gt;**, enter the following into the terminal: 
 
-    echo 'export SCANNING_VALIDATOR=<VALIDATOR&gt>' >> ~/.bashrc
-
     echo 'export MERAKI_DASHBOARD_API_KEY=<KEY>' >> ~/.bashrc
 
     echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/<NETWORK ID>/bluetoothClients?perPage=20' >> ~/.bashrc
