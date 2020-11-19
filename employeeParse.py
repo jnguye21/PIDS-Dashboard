@@ -134,10 +134,15 @@ def setEmployeeCount():
     maxTime = max(seq)
 
     for employee in deviceHistory['deviceList']:
-        if employee['name'] == mainUser:
+        #print(employee)
+
+        if employee['isMainUser'] is True:
             deviceCount += 1
         elif employee['updatedSeen'] == maxTime:
             deviceCount += 1
+
+        #print()
+        #print(deviceCount)
 
 
 # set both nearby and away employees

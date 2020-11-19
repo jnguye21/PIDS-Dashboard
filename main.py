@@ -59,8 +59,8 @@ def job():
 
     for employee in deviceHistory2['deviceList'][1:]:
         employeeName = employee['name']
-        empTime = employee['updatedSeen']
-        print(empTime)
+        #empTime = employee['updatedSeen']
+        #print(empTime)
 
         if employeeName is not None:
             # employee currently in range
