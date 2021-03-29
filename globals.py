@@ -18,29 +18,18 @@ deviceCount = 0
 # deviceHistory = {
 #       'deviceList': [
 #           {
-#               'isMainUser': <bool>
-#               'name': <string>,
-#               'firstSeen': <int>,
-#               'updatedSeen': <int>,
-#               'lastSeen': <int>,
-#               'isContinuous': <bool>,
-#               'isAway': <bool>,  
-#               'justArrived': <bool>
-#               'justLeft': <bool>,  
-#               'hasChanged': <bool>
+#               'isMainUser': <bool>        // if visually impaired user
+#               'name': <string>,           // employee name
+#               'firstSeen': <int>,         // initial time entered if currently in area
+#               'updatedSeen': <int>,       // most recent time if currently in area
+#               'lastSeen': <int>,          // last time present if no longer in area
+#               'justArrived': <bool>       // just entered area
+#               'isContinuous': <bool>,     // currently in area
+#               'justLeft': <bool>,         // just left area
+#               'isAway': <bool>,           // no longer in area
+#               'hasChanged': <bool>        // either just entered or left area
 #           },
-#           {
-#               'isMainUser': <bool>
-#               'name': <string>,
-#               'firstSeen': <int>,
-#               'updatedSeen': <int>,
-#               'lastSeen': <int>,
-#               'isContinuous': <bool>,
-#               'isAway': <bool>,  
-#               'justArrived': <bool>
-#               'justLeft': <bool>,  
-#               'hasChanged': <bool>
-#           }, 
 #           ...
 #       ]
 #   }
+

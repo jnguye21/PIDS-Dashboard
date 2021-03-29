@@ -17,7 +17,6 @@ def setNearbyEmployees(dashboardResponse):
     for client in dashboardResponse:
         # bluetooth
         if len(client['id']) == 18 and client['name'] is not None: 
-            #deviceCount += 1
             # first check if employee is in deviceHistory to prevent duplicate entries
             for employee in deviceHistory['deviceList']:
                 # previously seen
@@ -41,10 +40,7 @@ def setNearbyEmployees(dashboardResponse):
                         employee['hasChanged'] = False
 
                     employee['updatedSeen'] = client['lastSeen']
-                    #print('{}'.format(client['name']))
                     break
-                #else:
-                #    continue
                 
             for employee in deviceHistory['deviceList']:
                 # employee's intitial sighting
@@ -65,8 +61,6 @@ def setNearbyEmployees(dashboardResponse):
                     employee['justLeft'] = False
                     employee['hasChanged'] = True
                     break
-                #else:
-                #    continue
         # wifi
         elif len(client['id']) == 7: 
             deviceCount += 1
@@ -89,7 +83,6 @@ def setNearbyEmployees(dashboardResponse):
                         employee['hasChanged'] = False
 
                     employee['updatedSeen'] = client['lastSeen']
-                    #print('{}'.format(client['name']))
                     break
                 # employee's intitial sighting
                 elif employee['name'] is None: 
@@ -114,38 +107,11 @@ def setNearbyEmployees(dashboardResponse):
 
 # assign away employee info    
 def setAwayEmployees():
-    # compare last in range employees
-    # employees with lower updatedSeen times are 
-    ''' for employee1 in deviceHistory['deviceList']:
-        if employee1['isMainUser'] is True:
-            break
-        if employee1['isAway'] is False and employee1['isMainUser'] is False:
-            for employee2 in deviceHistory['deviceList']:
-                if employee1['name'] != employee2['name'] and employee2['isAway'] is False:
-                    if employee1['updatedSeen'] < employee2['updatedSeen']:
-                        employee1['firstSeen'] = None
-                        employee1['lastSeen'] = employee1['updatedSeen']
-                        employee1['isContinuous'] = False
-                        employee1['isAway'] = True
-                        employee1['justArrived'] = False
-                        employee1['justLeft'] = True
-                        employee1['hasChanged'] = True
-                        break
-                    elif employee2['updatedSeen'] < employee1['updatedSeen']:
-                        employee2['firstSeen'] = None
-                        employee2['lastSeen'] = employee2['updatedSeen']
-                        employee2['isContinuous'] = False
-                        employee2['isAway'] = True
-                        employee2['justArrived'] = False
-                        employee2['justLeft'] = True
-                        employee2['hasChanged'] = True
-                        break
-                    else:
-                        continue'''
-
     seq = [x['updatedSeen'] for x in deviceHistory['deviceList']]
     maxTime = max(seq)
 
+    # compare last in range employees
+    # employees with lower updatedSeen times are away
     for employee in deviceHistory['deviceList']:
         if employee['isMainUser'] is False and employee['updatedSeen'] < maxTime:
             employee['firstSeen'] = None
@@ -164,16 +130,10 @@ def setEmployeeCount():
     maxTime = max(seq)
 
     for employee in deviceHistory['deviceList']:
-        #print(employee)
-
         if employee['isMainUser'] is True:
             deviceCount += 1
         elif employee['updatedSeen'] == maxTime:
             deviceCount += 1
-
-        #print()
-        #print(deviceCount)
-
 
 # set both nearby and away employees
 # create employee count message
@@ -200,7 +160,6 @@ def getEmployeeCount():
         grammarInsert = "s are"
         
     employeeCountMsg += "{} other employee{} currently around you.".format(str(deviceCount - 1), grammarInsert)
-    #sendMessage(employeeCountMsg)
 
     return employeeCountMsg
 
@@ -220,10 +179,6 @@ def getInfo():
         (i['isMainUser'], i['justArrived'], i['justLeft']), reverse = True)
 
     user = deviceHistory['deviceList'][0]
-    
-    #print()
-    #print(user)
-    #print()
 
     if user['name'] is not None:        
         print()
@@ -246,12 +201,8 @@ def getInfo():
     print()
     sendMessage(employeeCountMsg)
 
-    #deviceHistory2 = copy.deepcopy(deviceHistory)
-
     for employee in deviceHistory['deviceList'][1:]:
         employeeName = employee['name']
-        #empTime = employee['updatedSeen']
-        #print(empTime)
 
         if employeeName is not None:
             # employee currently in range
@@ -264,16 +215,14 @@ def getInfo():
                 elif employee['isContinuous'] is True:
                     nearbyEmployee = "{} has been in the area for".format(employeeName)
                     timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
-                #print("timeDiff: {}".format(timeDiff))
+
                 employeeMessage = nearbyEmployee + timeDiff + "."
                 sendMessage(employeeMessage)
                 print("{}".format(employeeMessage))
             # employee out of range (employee['firstSeen'] is None)
-            elif employee['isAway'] is True: #and employee['isMainUser'] is False:
+            elif employee['isAway'] is True:
                 # just left
-                #print("test1")
                 if employee['justLeft'] is True:
-                    #print("test2")
                     awayEmployee = "{} left the area".format(employeeName)
                     employee['justLeft'] = False
                 # previously gone
@@ -284,5 +233,3 @@ def getInfo():
                 employeeMessage = awayEmployee + timeDiff + " ago."
                 sendMessage(employeeMessage)
                 print("{}".format(employeeMessage))
-
-    #return deviceHistory

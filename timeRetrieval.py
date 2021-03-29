@@ -10,11 +10,7 @@ def getTimeDiff(employeeEpoch, currentTime):
     diffEpoch = dateutil.relativedelta.relativedelta(currentTime, employeeTime)
 
     timeInfo = ""
-    #print("currentEpoch {}".format(currentEpoch))
-    #print("empEpoch: {}".format(employeeEpoch))
-    #print("currentTime: {}".format(currentTime))
-    #print("empTime: {}".format(employeeTime))
-    #print("diffEpoch: {}".format(diffEpoch))
+
     # same day only
     if diffEpoch.day is None:
         if diffEpoch.hours > 0:

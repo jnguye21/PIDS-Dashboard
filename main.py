@@ -1,4 +1,3 @@
-#from flask import Flask, json, request
 import schedule, sys, time
 
 from employeeParse import getInfo

@@ -6,6 +6,3 @@ def sendMessage(message):
     myObj = {'text': message}
 
     requests.post(url, data = myObj)
-
-blankSpace = "\n\n\n\n\n"
-sendMessage("\n")
